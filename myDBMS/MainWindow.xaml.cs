@@ -21,13 +21,15 @@ namespace myDBMS
     
 public partial class MainWindow : Window
     {
-        
+        public static MainWindow MW;
         public static Style rowStyle, rowElementStyle, buttonStyle, splitterStyle, labelStyle;
         public static Table MainTable = new Table();
         public static double WindowWidth, SplitterWidth = 3;
+        private static ColumnNameWindow colNameWin;
         public MainWindow()
         {
             InitializeComponent();
+            MW = this;
         }
         private void InitializeStyles()
         {
@@ -60,10 +62,18 @@ public partial class MainWindow : Window
         private void table_add_row(object sender, RoutedEventArgs e)
         {
             MainTable.AddRow(1);
-            ColumnNameWindow subWindow = new ColumnNameWindow();
-            subWindow.Show();
-            while (subWindow.IsActive) { }
-            ((Label)((Column)MainTable.Children[0]).Children[0]).Content = subWindow.Value;
+        }
+        public static void ShowColNameWin(object sender, EventArgs e)
+        {
+            colNameWin = new ColumnNameWindow();
+            colNameWin.Closed += SetColName;
+            colNameWin.Show();
+        }
+        private static void SetColName(object sender, EventArgs e)
+        {
+            if(!colNameWin.Value.Equals("")) 
+                MainTable.SelectedColumn.ColumnName.Content = colNameWin.Value;
+            colNameWin.Closed -= SetColName;
         }
 
         private void table_rmv_row(object sender, RoutedEventArgs e)

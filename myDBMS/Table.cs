@@ -11,6 +11,8 @@ namespace myDBMS
     public class Table : Grid
     {
         public int ColCount = 0, RowCount = 0;
+        public TextBox SelectedRow;
+        public Column SelectedColumn;
 
         public Table() { }
         public void AddColumn(int rowCount)
@@ -84,6 +86,21 @@ namespace myDBMS
             gs.Width = MainWindow.SplitterWidth;
             gs.SetValue(Grid.ColumnProperty, this.ColumnDefinitions.Count - 1);
             this.Children.Add(gs);
+        }
+
+        public void SetSelected(object sender, EventArgs e)
+        {
+            if (sender is Label)
+            {
+                SelectedColumn = ((Label)sender).Parent as Column;
+                if(SelectedColumn.Children.Count > 1) SelectedRow = SelectedColumn.Children[1] as TextBox;
+            }
+            else
+            {
+                SelectedRow = (TextBox)sender;
+                SelectedColumn = SelectedRow.Parent as Column;
+            }
+            Console.WriteLine($"selected row: {SelectedRow?.Text}, col: {SelectedColumn.ColumnName.Content}");
         }
     }
 }

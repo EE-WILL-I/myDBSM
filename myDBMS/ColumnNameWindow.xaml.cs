@@ -19,19 +19,27 @@ namespace myDBMS
     /// </summary>
     public partial class ColumnNameWindow : Window
     {
-        public String Value;
+        
+        public String Value = "";
         public ColumnNameWindow()
         {
             InitializeComponent();
+            MainWindow.MW.Closed += Exit;
         }
 
         private void btn_accept(object sender, RoutedEventArgs e)
         {
             Value = tb_input.Text;
-            Close();
+            Close(); 
         }
 
         private void btn_decline(object sender, RoutedEventArgs e)
+        {
+            Value = "";
+            Close();
+        }
+        
+        private void Exit(object sender, EventArgs e)
         {
             Close();
         }
