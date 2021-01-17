@@ -33,7 +33,7 @@ namespace myDBMS
                     TextBox textBox = new TextBox();
                     textBox.Style = MainWindow.rowElementStyle;
                     textBox.Width = (MainWindow.WINDOW_WIDTH - 36) / colCount;
-                    textBox.Text = "Row " + columns.Count;
+                    textBox.Text = "Row " + columns.Count; 
                     columns.Add(textBox);
                 }
                 this.Style = rowStyle;
