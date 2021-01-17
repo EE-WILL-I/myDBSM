@@ -71,10 +71,11 @@ namespace myDBMS
 
         public void AddColumn(int rowCount)
         {
-            AddColumnDifinition();
+            if(Columns.ColumnDefinitions.Count == 0) AddColumnDifinition();
             Columns.Children.Add(new Column(rowCount));
             AddColumnDifinition();
             AddSplitter();
+            AddColumnDifinition();
         }
 
         public void RemoveColumn()
@@ -85,6 +86,9 @@ namespace myDBMS
                 Columns.Children.RemoveAt(size - 1);
                 Columns.Children.RemoveAt(size - 2);
                 RemoveColumnDifinition();
+                RemoveColumnDifinition();
+                RemoveColumnDifinition();
+                AddColumnDifinition();
             }
         }
 
@@ -97,11 +101,10 @@ namespace myDBMS
 
         private void RemoveColumnDifinition()
         {
-            int size = Columns.Children.Count;
-            if (size >= 2)
+            int size = Columns.ColumnDefinitions.Count;
+            if (size > 0)
             {
                 Columns.ColumnDefinitions.RemoveAt(size - 1);
-                Columns.ColumnDefinitions.RemoveAt(size - 2);
             }
         }
 
