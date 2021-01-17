@@ -20,40 +20,41 @@ namespace myDBMS
     /// </summary>
     public partial class MainWindow : Window
     {
-        public class TableRow : StackPanel
+        public class Column : StackPanel
         {
             //StackPanel mainTable;
-            List<TextBox> columns;
-            public TableRow(int colCount)
+            List<TextBox> rows;
+            public Column(int rowCount)
             {
                 //table = sp_table_main;
-                columns = new List<TextBox>();
-                for (int i = 0; i < colCount; i++)
+                rows = new List<TextBox>();
+                for (int i = 0; i < rowCount; i++)
                 {
                     TextBox textBox = new TextBox();
                     textBox.Style = MainWindow.rowElementStyle;
-                    textBox.Width = (MainWindow.WINDOW_WIDTH - 36) / colCount;
-                    textBox.Text = "Row " + columns.Count; 
-                    columns.Add(textBox);
+                    //textBox.Width = ((MainWindow.WindowWidth - 36) / rowCount) - ((rowCount - 1) * SplitterWidth);
+                    textBox.Text = "Row " + i; 
+                    rows.Add(textBox);
                 }
-                this.Style = rowStyle;
-                foreach(TextBox tb in columns)
+                this.SetValue(Grid.ColumnProperty, Columns.ColumnDefinitions.Count - 1);
+                foreach(TextBox tb in rows)
                     this.Children.Add(tb);
             }
-            public TableRow() : this(1) 
+            public Column() : this(1) 
             {
 
             }
         }
         public static Style rowStyle, rowElementStyle, buttonStyle, splitterStyle;
-        public static double WINDOW_WIDTH;
+        public static Grid Columns;
+        public static double WindowWidth, SplitterWidth = 5;
         public MainWindow()
         {
             InitializeComponent();
         }
         private void InitializeStyles()
         {
-            WINDOW_WIDTH = this.Width;
+            WindowWidth = this.Width;
             rowStyle = FindResource("ROW") as Style;
             rowElementStyle = FindResource("ROW_ELEMENT") as Style;
             buttonStyle = FindResource("BUTTON") as Style;
@@ -63,38 +64,64 @@ namespace myDBMS
         private void sp_onInit(object sender, EventArgs e)
         {
             InitializeStyles();
-            Grid columns = sp_table_main.Children[0] as Grid;
+            Columns = sp_table_main.Children[0] as Grid;
 
-            ColumnDefinition cd1 = new ColumnDefinition(), cd2 = new ColumnDefinition();
-            cd1.Width = GridLength.Auto;
-            cd2.Width = GridLength.Auto;
+            AddColumn(1);
+        }
 
+        public void AddColumn(int rowCount)
+        {
+            AddColumnDifinition();
+            Columns.Children.Add(new Column(rowCount));
+            AddColumnDifinition();
+            AddSplitter();
+        }
+
+        public void RemoveColumn()
+        {
+            int size = Columns.Children.Count;
+            if (size >= 2)
+            {
+                Columns.Children.RemoveAt(size - 1);
+                Columns.Children.RemoveAt(size - 2);
+                RemoveColumnDifinition();
+            }
+        }
+
+        private void AddColumnDifinition()
+        {
+            ColumnDefinition cd = new ColumnDefinition();
+            cd.Width = GridLength.Auto;
+            Columns.ColumnDefinitions.Add(cd);
+        }
+
+        private void RemoveColumnDifinition()
+        {
+            int size = Columns.Children.Count;
+            if (size >= 2)
+            {
+                Columns.ColumnDefinitions.RemoveAt(size - 1);
+                Columns.ColumnDefinitions.RemoveAt(size - 2);
+            }
+        }
+
+        private void AddSplitter()
+        {
             GridSplitter gs = new GridSplitter();
             gs.Style = splitterStyle;
-            columns.ColumnDefinitions.Add(cd1);
-            gs.SetValue(Grid.ColumnProperty, columns.ColumnDefinitions.Count - 1);
-            columns.Children.Add(gs);
-
-            StackPanel sp = new StackPanel();
-            TextBox tb = new TextBox();
-            tb.Style = rowElementStyle;
-            sp.Children.Add(tb);
-            columns.ColumnDefinitions.Add(cd2);
-            sp.SetValue(Grid.ColumnProperty, columns.ColumnDefinitions.Count - 1);
-            columns.Children.Add(sp);
+            gs.Width = SplitterWidth;
+            gs.SetValue(Grid.ColumnProperty, Columns.ColumnDefinitions.Count - 1);
+            Columns.Children.Add(gs);
         }
 
         private void table_add_col(object sender, RoutedEventArgs e)
         {
-            TableRow row = new TableRow(sp_table_main.Children.Count + 1);
-            sp_table_main.Children.Add(row);
+            AddColumn(1);
         }
 
         private void table_rmv_col(object sender, RoutedEventArgs e)
         {
-            int size = sp_table_main.Children.Count;
-            if(size > 0)
-                sp_table_main.Children.RemoveAt(size - 1);
+            RemoveColumn();
         }
     }
 }
