@@ -44,27 +44,31 @@ public partial class MainWindow : Window
             InitializeStyles();
             sp_table_main.Children.Add(MainTable);
 
-            MainTable.AddColumn(1);
+            MainTable.AddColumn(0);
         }
 
         private void table_add_col(object sender, RoutedEventArgs e)
         {
-            MainTable.AddColumn(MainTable.ColCount);
+            MainTable.AddColumn(MainTable.RowCount);
         }
 
         private void table_rmv_col(object sender, RoutedEventArgs e)
         {
-            MainTable.RemoveColumn();
+            MainTable.RemoveColumn(MainTable.Children.Count - 1);
         }
 
         private void table_add_row(object sender, RoutedEventArgs e)
         {
-            MainTable.AddRow();
+            MainTable.AddRow(1);
+            ColumnNameWindow subWindow = new ColumnNameWindow();
+            subWindow.Show();
+            while (subWindow.IsActive) { }
+            ((Label)((Column)MainTable.Children[0]).Children[0]).Content = subWindow.Value;
         }
 
         private void table_rmv_row(object sender, RoutedEventArgs e)
         {
-            MainTable.RemoveRow();
+            MainTable.RemoveRow(MainTable.RowCount);
         }
     }
 }

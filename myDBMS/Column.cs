@@ -26,7 +26,7 @@ namespace myDBMS
         }
         public Column(int rowCount) : this(rowCount, "Column") { }
         public Column(String name) : this(1, name) { }
-        public Column() : this(1, "Column") { }
+        public Column() : this(0, "Column") { }
         public void AddRow(String value)
         {
             TextBox textBox = new TextBox();

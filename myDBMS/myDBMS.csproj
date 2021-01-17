@@ -56,7 +56,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Column.cs" />
+    <Compile Include="ColumnNameWindow.xaml.cs">
+      <DependentUpon>ColumnNameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Table.cs" />
+    <Page Include="ColumnNameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

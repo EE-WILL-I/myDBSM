@@ -23,6 +23,7 @@ namespace myDBMS
             AddSplitter();
             AddColumnDifinition(); // add empty to have ability to resize the last column width
 
+            //RowCount += rowCount;
             ColCount++;
         }
 
@@ -42,27 +43,22 @@ namespace myDBMS
             }
         }
 
-        public void RemoveColumn()
+        public void AddRow(int count)
         {
-            RemoveColumn(this.Children.Count - 1);
-        }
-
-        public void AddRow()
-        {
-            foreach (Object child in this.Children) if (child is Column) ((Column)child).AddRow();
-            RowCount++;
+            for (int i = 0; i < count; i++)
+            {
+                foreach (Object child in this.Children) if (child is Column) ((Column)child).AddRow();
+                RowCount++;
+            }
         }
 
         public void RemoveRow(int index)
         {
-            foreach (Object child in this.Children) if (child is Column) ((Column)child).RemoveRow(index);
-            RowCount--;
-        }
-
-        public void RemoveRow()
-        {
-            foreach (Object child in this.Children) if (child is Column) ((Column)child).RemoveRow();
-            RowCount--;
+            if (index >= 0)
+            {
+                foreach (Object child in this.Children) if (child is Column) ((Column)child).RemoveRow(index);
+                if(index > 0) RowCount--;
+            }
         }
 
         private void AddColumnDifinition()
