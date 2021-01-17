@@ -5,11 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myDBMS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="520" Width="936">
+        Title="myDBMS" Height="520" Width="936" MinWidth="460" MinHeight="300" >
     <Window.Resources>
         <SolidColorBrush x:Key="COLOR_A" Color="#FF1E1E1E"/>
         <SolidColorBrush x:Key="COLOR_B" Color="#FF744BBD"/>
         <SolidColorBrush x:Key="COLOR_C" Color="#FFFFFFFF"/>
+        <Style x:Key="LABEL" TargetType="{x:Type Label}">
+            <Setter Property="TextElement.Foreground" Value="{StaticResource COLOR_C}"/>
+            <Setter Property="Background" Value="{StaticResource COLOR_B}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
         <Style x:Key="ROW" TargetType="{x:Type StackPanel}">
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Orientation" Value="Horizontal" />
@@ -18,12 +25,12 @@
         </Style>
         <Style x:Key="ROW_ELEMENT" TargetType="{x:Type TextBox}">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property='Background' Value="{StaticResource COLOR_B}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource COLOR_A}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource COLOR_B}"/>
             <Setter Property="TextElement.Foreground" Value="{StaticResource COLOR_C}"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="35"/>
             <Setter Property="TextAlignment" Value="Justify"/>
-            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             <Setter Property="Text" Value="sample"/>
         </Style>
         <Style x:Key="BUTTON" TargetType="Button">
@@ -42,18 +49,20 @@
         </Style>
     </Window.Resources>
     <Grid Background="{StaticResource COLOR_A}">
-        <Button x:Name="btn_add_col" Content="+" Style="{StaticResource BUTTON}" Margin="815,38,0,0" Click="table_add_col" Background="#FF744BBD"/>
-        <Button x:Name="btn_rmv_col" Content="-" Style="{StaticResource BUTTON}" Margin="605,38,0,0" Click="table_rmv_col"/>
+        <Button x:Name="btn_add_col" Content="→" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,40,0"  Click="table_add_col"/>
+        <Button x:Name="btn_rmv_col" Content="←" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,140,0" Click="table_rmv_col"/>
+        <Button x:Name="btn_add_row" Content="↓" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,240,0" Click="table_add_row"/>
+        <Button x:Name="btn_rmv_row" Content="↑" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,340,0" Click="table_rmv_row"/>
         
         <Border BorderBrush="Black" BorderThickness="1" Background="{StaticResource COLOR_B}" Margin="10,92,10,10">
             <Grid Margin="3,3,3,3" Background="{StaticResource COLOR_A}">
                 <StackPanel x:Name="sp_table_main" Initialized="sp_onInit" Style="{StaticResource ROW}">
-                    <Grid>
+                    <!--<Grid x:Name="grid_table_content">
                         <Grid.ColumnDefinitions>
                             
                         </Grid.ColumnDefinitions>
                         
-                    </Grid>
+                    </Grid>-->
                 </StackPanel>
             </Grid>
         </Border>

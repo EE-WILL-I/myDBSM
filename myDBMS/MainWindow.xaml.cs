@@ -18,36 +18,13 @@ namespace myDBMS
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    
+public partial class MainWindow : Window
     {
-        public class Column : StackPanel
-        {
-            //StackPanel mainTable;
-            List<TextBox> rows;
-            public Column(int rowCount)
-            {
-                //table = sp_table_main;
-                rows = new List<TextBox>();
-                for (int i = 0; i < rowCount; i++)
-                {
-                    TextBox textBox = new TextBox();
-                    textBox.Style = MainWindow.rowElementStyle;
-                    //textBox.Width = ((MainWindow.WindowWidth - 36) / rowCount) - ((rowCount - 1) * SplitterWidth);
-                    textBox.Text = "Row " + i; 
-                    rows.Add(textBox);
-                }
-                this.SetValue(Grid.ColumnProperty, Columns.ColumnDefinitions.Count - 1);
-                foreach(TextBox tb in rows)
-                    this.Children.Add(tb);
-            }
-            public Column() : this(1) 
-            {
-
-            }
-        }
-        public static Style rowStyle, rowElementStyle, buttonStyle, splitterStyle;
-        public static Grid Columns;
-        public static double WindowWidth, SplitterWidth = 5;
+        
+        public static Style rowStyle, rowElementStyle, buttonStyle, splitterStyle, labelStyle;
+        public static Table MainTable = new Table();
+        public static double WindowWidth, SplitterWidth = 3;
         public MainWindow()
         {
             InitializeComponent();
@@ -59,72 +36,35 @@ namespace myDBMS
             rowElementStyle = FindResource("ROW_ELEMENT") as Style;
             buttonStyle = FindResource("BUTTON") as Style;
             splitterStyle = FindResource("SPLITTER") as Style;
+            labelStyle = FindResource("LABEL") as Style;
         }
 
         private void sp_onInit(object sender, EventArgs e)
         {
             InitializeStyles();
-            Columns = sp_table_main.Children[0] as Grid;
+            sp_table_main.Children.Add(MainTable);
 
-            AddColumn(1);
-        }
-
-        public void AddColumn(int rowCount)
-        {
-            if(Columns.ColumnDefinitions.Count == 0) AddColumnDifinition();
-            Columns.Children.Add(new Column(rowCount));
-            AddColumnDifinition();
-            AddSplitter();
-            AddColumnDifinition();
-        }
-
-        public void RemoveColumn()
-        {
-            int size = Columns.Children.Count;
-            if (size >= 2)
-            {
-                Columns.Children.RemoveAt(size - 1);
-                Columns.Children.RemoveAt(size - 2);
-                RemoveColumnDifinition();
-                RemoveColumnDifinition();
-                RemoveColumnDifinition();
-                AddColumnDifinition();
-            }
-        }
-
-        private void AddColumnDifinition()
-        {
-            ColumnDefinition cd = new ColumnDefinition();
-            cd.Width = GridLength.Auto;
-            Columns.ColumnDefinitions.Add(cd);
-        }
-
-        private void RemoveColumnDifinition()
-        {
-            int size = Columns.ColumnDefinitions.Count;
-            if (size > 0)
-            {
-                Columns.ColumnDefinitions.RemoveAt(size - 1);
-            }
-        }
-
-        private void AddSplitter()
-        {
-            GridSplitter gs = new GridSplitter();
-            gs.Style = splitterStyle;
-            gs.Width = SplitterWidth;
-            gs.SetValue(Grid.ColumnProperty, Columns.ColumnDefinitions.Count - 1);
-            Columns.Children.Add(gs);
+            MainTable.AddColumn(1);
         }
 
         private void table_add_col(object sender, RoutedEventArgs e)
         {
-            AddColumn(1);
+            MainTable.AddColumn(MainTable.ColCount);
         }
 
         private void table_rmv_col(object sender, RoutedEventArgs e)
         {
-            RemoveColumn();
+            MainTable.RemoveColumn();
+        }
+
+        private void table_add_row(object sender, RoutedEventArgs e)
+        {
+            MainTable.AddRow();
+        }
+
+        private void table_rmv_row(object sender, RoutedEventArgs e)
+        {
+            MainTable.RemoveRow();
         }
     }
 }
