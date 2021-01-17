@@ -45,7 +45,7 @@ namespace myDBMS
 
             }
         }
-        public static Style rowStyle, rowElementStyle, buttonStyle;
+        public static Style rowStyle, rowElementStyle, buttonStyle, splitterStyle;
         public static double WINDOW_WIDTH;
         public MainWindow()
         {
@@ -57,22 +57,40 @@ namespace myDBMS
             rowStyle = FindResource("ROW") as Style;
             rowElementStyle = FindResource("ROW_ELEMENT") as Style;
             buttonStyle = FindResource("BUTTON") as Style;
+            splitterStyle = FindResource("SPLITTER") as Style;
         }
 
         private void sp_onInit(object sender, EventArgs e)
         {
             InitializeStyles();
-            TableRow row = new TableRow(1);
-            sp_table_main.Children.Add(row);
+            Grid columns = sp_table_main.Children[0] as Grid;
+
+            ColumnDefinition cd1 = new ColumnDefinition(), cd2 = new ColumnDefinition();
+            cd1.Width = GridLength.Auto;
+            cd2.Width = GridLength.Auto;
+
+            GridSplitter gs = new GridSplitter();
+            gs.Style = splitterStyle;
+            columns.ColumnDefinitions.Add(cd1);
+            gs.SetValue(Grid.ColumnProperty, columns.ColumnDefinitions.Count - 1);
+            columns.Children.Add(gs);
+
+            StackPanel sp = new StackPanel();
+            TextBox tb = new TextBox();
+            tb.Style = rowElementStyle;
+            sp.Children.Add(tb);
+            columns.ColumnDefinitions.Add(cd2);
+            sp.SetValue(Grid.ColumnProperty, columns.ColumnDefinitions.Count - 1);
+            columns.Children.Add(sp);
         }
 
-        private void table_add_row(object sender, RoutedEventArgs e)
+        private void table_add_col(object sender, RoutedEventArgs e)
         {
             TableRow row = new TableRow(sp_table_main.Children.Count + 1);
             sp_table_main.Children.Add(row);
         }
 
-        private void table_rmv_row(object sender, RoutedEventArgs e)
+        private void table_rmv_col(object sender, RoutedEventArgs e)
         {
             int size = sp_table_main.Children.Count;
             if(size > 0)

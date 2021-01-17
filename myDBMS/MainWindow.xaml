@@ -42,8 +42,8 @@
         </Style>
     </Window.Resources>
     <Grid Background="{StaticResource COLOR_A}">
-        <Button x:Name="btn_add_row" Content="+" Style="{StaticResource BUTTON}" Margin="815,38,0,0" Click="table_add_row" Background="#FF744BBD"/>
-        <Button x:Name="btn_rmv_row" Content="-" Style="{StaticResource BUTTON}" Margin="605,38,0,0" Click="table_rmv_row"/>
+        <Button x:Name="btn_add_row" Content="+" Style="{StaticResource BUTTON}" Margin="815,38,0,0" Click="table_add_col" Background="#FF744BBD"/>
+        <Button x:Name="btn_rmv_row" Content="-" Style="{StaticResource BUTTON}" Margin="605,38,0,0" Click="table_rmv_col"/>
         
         <Border BorderBrush="Black" BorderThickness="1" Background="{StaticResource COLOR_B}" Margin="10,92,10,10">
             <Grid Margin="3,3,3,3" Background="{StaticResource COLOR_A}">
@@ -57,30 +57,12 @@
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
                             <TextBox Style="{StaticResource ROW_ELEMENT}" />
                             <TextBox Style="{StaticResource ROW_ELEMENT}" />
                             <TextBox Style="{StaticResource ROW_ELEMENT}" />
                         </StackPanel>
-                        <GridSplitter Grid.Column="1" Style="{StaticResource SPLITTER}"/>
-                        <StackPanel Grid.Column="2">
-                            <TextBox Style="{StaticResource ROW_ELEMENT}" />
-                            <TextBox Style="{StaticResource ROW_ELEMENT}" />
-                            <TextBox Style="{StaticResource ROW_ELEMENT}" />
-                        </StackPanel>
-                        <GridSplitter Grid.Column="3" Style="{StaticResource SPLITTER}"/>
-                        <StackPanel Grid.Column="4">
-                            <TextBox Style="{StaticResource ROW_ELEMENT}" />
-                            <TextBox Style="{StaticResource ROW_ELEMENT}" />
-                            <TextBox Style="{StaticResource ROW_ELEMENT}" />
-                        </StackPanel>
-                        <GridSplitter Grid.Column="5" Style="{StaticResource SPLITTER}"/>
                     </Grid>
                 </StackPanel>
             </Grid>
