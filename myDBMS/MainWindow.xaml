@@ -26,7 +26,7 @@
         <Style x:Key="ROW_ELEMENT" TargetType="{x:Type TextBox}">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property='Background' Value="{StaticResource COLOR_A}"/>
+            <Setter Property='Background' Value="#FF27242B"/>
             <Setter Property="BorderBrush" Value="{StaticResource COLOR_B}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="TextElement.Foreground" Value="{StaticResource COLOR_C}"/>
@@ -38,8 +38,8 @@
             <Setter Property="TextElement.Foreground" Value="{StaticResource COLOR_C}"/>
             <Setter Property="Content" Value="button"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Width" Value="75"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="85"/>
+            <Setter Property="Height" Value="25"/>
         </Style>
         <Style x:Key="SPLITTER" TargetType="GridSplitter">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -51,23 +51,42 @@
             <Setter Property="Background" Value="{StaticResource COLOR_A}"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
+        <Style x:Key="MENU" TargetType="{x:Type Menu}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Background" Value="{StaticResource COLOR_A}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource COLOR_A}"/>
+            <Setter Property="TextElement.Foreground" Value="{StaticResource COLOR_C}"/>
+        </Style>
+        <Style TargetType="MenuItem">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Background" Value="{StaticResource COLOR_C}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource COLOR_C}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="TextElement.Foreground" Value="Black"/>
+        </Style>
     </Window.Resources>
     <Grid Background="{StaticResource COLOR_A}">
-        <Button x:Name="btn_add_col" Content="→" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,40,0"  Click="table_add_col"/>
-        <Button x:Name="btn_rmv_col" Content="←" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,140,0" Click="table_rmv_col"/>
-        <Button x:Name="btn_add_row" Content="↓" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,240,0" Click="table_add_row"/>
-        <Button x:Name="btn_rmv_row" Content="↑" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,340,0" Click="table_rmv_row"/>
-        
+        <Menu Style="{StaticResource MENU}">
+            <MenuItem Header="File" Background="{StaticResource COLOR_A}" TextElement.Foreground="{StaticResource COLOR_C}">
+                <MenuItem Header="New Table" Click="menu_new_table"/>
+                <MenuItem Header="Open Table" Click="menu_load_table"/>
+                <MenuItem Header="Save Table" Click="menu_save_table"/>
+            </MenuItem>
+            <MenuItem Header="Edit" Background="{StaticResource COLOR_A}" TextElement.Foreground="{StaticResource COLOR_C}"></MenuItem>
+            <MenuItem Header="View" Background="{StaticResource COLOR_A}" TextElement.Foreground="{StaticResource COLOR_C}"></MenuItem>
+        </Menu>
+        <Button x:Name="btn_add_col" Content="Add column" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,27,22,0"  Click="table_add_col"/>
+        <Button x:Name="btn_rmv_col" Content="Remove column" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,56,22,0" Click="table_rmv_col"/>
+        <Button x:Name="btn_add_row" Content="Add row" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,27,112,0" Click="table_add_row" Height="25"/>
+        <Button x:Name="btn_rmv_row" Content="Remove row" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,56,112,0" Click="table_rmv_row"/>
+
         <Border BorderBrush="Black" BorderThickness="1" Background="{StaticResource COLOR_B}" Margin="10,92,10,10">
             <Grid Margin="3,3,3,3" Background="{StaticResource COLOR_A}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" BorderThickness="0">
                     <StackPanel x:Name="sp_table_main" Initialized="sp_onInit" Style="{StaticResource ROW}" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-                        <!--<Grid x:Name="grid_table_content">
-                        <Grid.ColumnDefinitions>
-                            
-                        </Grid.ColumnDefinitions>
-                        
-                    </Grid>-->
+                  
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

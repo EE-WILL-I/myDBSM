@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,12 +56,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BinarySerializator.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="ColumnNameWindow.xaml.cs">
       <DependentUpon>ColumnNameWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Row.cs" />
     <Compile Include="Table.cs" />
+    <Compile Include="TableSerializableData.cs" />
     <Page Include="ColumnNameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

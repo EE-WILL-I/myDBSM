@@ -15,10 +15,6 @@ using System.Windows.Shapes;
 
 namespace myDBMS
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
-    
 public partial class MainWindow : Window
     {
         public static MainWindow MW;
@@ -26,6 +22,7 @@ public partial class MainWindow : Window
         public static Table MainTable = new Table();
         public static double WindowWidth, SplitterWidth = 3;
         private static ColumnNameWindow colNameWin;
+        private static string PathToSavedData = "C://table1.tbl";
         public MainWindow()
         {
             InitializeComponent();
@@ -59,6 +56,51 @@ public partial class MainWindow : Window
         private void table_rmv_col(object sender, RoutedEventArgs e)
         {
             MainTable.RemoveColumn(MainTable.Children.Count - 1);
+        }
+
+        private void menu_new_table(object sender, RoutedEventArgs e)
+        {
+            sp_table_main.Children.RemoveAt(0);
+            MainTable = new Table();
+            sp_table_main.Children.Add(MainTable);
+        }
+
+        private void menu_load_table(object sender, RoutedEventArgs e)
+        {
+            sp_table_main.Children.RemoveAt(0);
+
+            var fileDialog = new System.Windows.Forms.OpenFileDialog();
+            var result = fileDialog.ShowDialog();
+            switch (result)
+            {
+                case System.Windows.Forms.DialogResult.OK:
+                    {
+                        PathToSavedData = fileDialog.FileName;
+                        TableSerializableData tsd = BinarySerializator.Read<TableSerializableData>(PathToSavedData);
+                        MainTable = tsd.Deserialize();
+                        break;
+                    }
+                case System.Windows.Forms.DialogResult.Cancel:
+                default:
+                    break;
+            }
+            sp_table_main.Children.Add(MainTable);
+        }
+
+        private void menu_save_table(object sender, RoutedEventArgs e)
+        {
+            sp_table_main.Children.RemoveAt(0);
+
+            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog.Filter = "Table file (*.tbl)|*.tbl";
+            var result = saveFileDialog.ShowDialog();
+            PathToSavedData = saveFileDialog.FileName;
+
+            Console.WriteLine("Saving to " + PathToSavedData);
+
+            BinarySerializator.Write<TableSerializableData>(PathToSavedData, new TableSerializableData(MainTable));
+
+            sp_table_main.Children.Add(MainTable);
         }
 
         private void table_add_row(object sender, RoutedEventArgs e)
@@ -103,11 +145,11 @@ public partial class MainWindow : Window
             {
                 table_add_row(sender, e);
             }
-            else if (e.Key == Key.Right && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+            else if (e.Key == Key.Right && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 MainTable.SelectRightColumn();
             }
-            else if (e.Key == Key.Left && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+            else if (e.Key == Key.Left && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 MainTable.SelectLeftColumn();
             }
