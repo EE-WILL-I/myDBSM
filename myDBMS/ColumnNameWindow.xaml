@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myDBMS"
         mc:Ignorable="d"
-        Title="ColumnNameWindow" Height="150" Width="200" WindowStyle="None" ResizeMode="NoResize">
+        Title="ColumnNameWindow" Height="150" Width="200" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <SolidColorBrush x:Key="COLOR_A" Color="#FF1E1E1E"/>
         <SolidColorBrush x:Key="COLOR_B" Color="#FF744BBD"/>
@@ -49,8 +49,8 @@
         </Style>
     </Window.Resources>
     <Grid Background="{StaticResource COLOR_A}">
-        <Label Content="Enter colunm name:" Style="{StaticResource LABEL}" Background="{StaticResource COLOR_A}" Margin="0,10,0,110"/>
-        <TextBox x:Name="tb_input" Style="{StaticResource ROW_ELEMENT}" Background="{StaticResource COLOR_A}" Margin="0,30,0,35"/>
+        <Label Content="Enter colunm name:" Style="{StaticResource LABEL}" Background="{StaticResource COLOR_A}" Margin="0,20,0,100"/>
+        <TextBox x:Name="tb_input" Style="{StaticResource ROW_ELEMENT}" Background="{StaticResource COLOR_A}" Text="Column" Margin="10,55,10,60"/>
         <Button Style="{StaticResource BUTTON}" Margin="115,105,10,0" Background="{StaticResource COLOR_A}" Content="Accept" Click="btn_accept"/>
         <Button Style="{StaticResource BUTTON}" Margin="10,105,115,0" Background="{StaticResource COLOR_A}" Content="Decline" Click="btn_decline"/>
     </Grid>

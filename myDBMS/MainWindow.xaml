@@ -26,12 +26,12 @@
         <Style x:Key="ROW_ELEMENT" TargetType="{x:Type TextBox}">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property='Background' Value="{StaticResource COLOR_B}"/>
+            <Setter Property='Background' Value="{StaticResource COLOR_A}"/>
             <Setter Property="BorderBrush" Value="{StaticResource COLOR_B}"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="TextElement.Foreground" Value="{StaticResource COLOR_C}"/>
             <Setter Property="Height" Value="35"/>
             <Setter Property="TextAlignment" Value="Justify"/>
-            <Setter Property="Text" Value="sample"/>
         </Style>
         <Style x:Key="BUTTON" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource COLOR_B}"/>
@@ -47,6 +47,10 @@
             <Setter Property="ShowsPreview" Value="True"/>
             <Setter Property="Width" Value="3"/>
         </Style>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="{StaticResource COLOR_A}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
     </Window.Resources>
     <Grid Background="{StaticResource COLOR_A}">
         <Button x:Name="btn_add_col" Content="→" Style="{StaticResource BUTTON}" HorizontalAlignment="Right" Margin="0,40,40,0"  Click="table_add_col"/>
@@ -56,14 +60,16 @@
         
         <Border BorderBrush="Black" BorderThickness="1" Background="{StaticResource COLOR_B}" Margin="10,92,10,10">
             <Grid Margin="3,3,3,3" Background="{StaticResource COLOR_A}">
-                <StackPanel x:Name="sp_table_main" Initialized="sp_onInit" Style="{StaticResource ROW}">
-                    <!--<Grid x:Name="grid_table_content">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" BorderThickness="0">
+                    <StackPanel x:Name="sp_table_main" Initialized="sp_onInit" Style="{StaticResource ROW}" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                        <!--<Grid x:Name="grid_table_content">
                         <Grid.ColumnDefinitions>
                             
                         </Grid.ColumnDefinitions>
                         
                     </Grid>-->
-                </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Border>
     </Grid>

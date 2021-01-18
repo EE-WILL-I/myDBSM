@@ -30,6 +30,7 @@ public partial class MainWindow : Window
         {
             InitializeComponent();
             MW = this;
+            this.PreviewKeyUp += new KeyEventHandler(OnKeyPressedHandler);
         }
         private void InitializeStyles()
         {
@@ -47,6 +48,7 @@ public partial class MainWindow : Window
             sp_table_main.Children.Add(MainTable);
 
             MainTable.AddColumn(0);
+            MainTable.AddRow(1, "Row 0");
         }
 
         private void table_add_col(object sender, RoutedEventArgs e)
@@ -66,12 +68,13 @@ public partial class MainWindow : Window
         public static void ShowColNameWin(object sender, EventArgs e)
         {
             colNameWin = new ColumnNameWindow();
+            colNameWin.ColName = (string)MainTable.SelectedColumn.ColumnName.Content;
             colNameWin.Closed += SetColName;
-            colNameWin.Show();
+            colNameWin.ShowDialog();
         }
         private static void SetColName(object sender, EventArgs e)
         {
-            if(!colNameWin.Value.Equals("")) 
+            if(!colNameWin.Value.Equals("") && MainTable.SelectedColumn != null) 
                 MainTable.SelectedColumn.ColumnName.Content = colNameWin.Value;
             colNameWin.Closed -= SetColName;
         }
@@ -79,6 +82,22 @@ public partial class MainWindow : Window
         private void table_rmv_row(object sender, RoutedEventArgs e)
         {
             MainTable.RemoveRow(MainTable.RowCount);
+        }
+
+        private void OnKeyPressedHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MainTable.SelectedColumn.SelectNextRow();
+            }
+            if (e.Key == Key.Up)
+            {
+                MainTable.SelectedColumn.SelectNextRow();
+            }
+            if (e.Key == Key.Up)
+            {
+                MainTable.SelectedColumn.SelectPrewRow();
+            }
         }
     }
 }

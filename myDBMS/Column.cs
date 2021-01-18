@@ -16,13 +16,13 @@ namespace myDBMS
         {
             ColumnName.Content = name;
             ColumnName.Style = MainWindow.labelStyle;
-            ColumnName.MouseDoubleClick += MainWindow.ShowColNameWin;
             ColumnName.MouseDoubleClick += MainWindow.MainTable.SetSelected;
+            ColumnName.MouseDoubleClick += MainWindow.ShowColNameWin;
             this.Children.Add(ColumnName);
 
             for (int i = 0; i < rowCount; i++)
             {
-                AddRow($"Row {i}");
+                AddRow();
             }
             this.SetValue(Grid.ColumnProperty, MainWindow.MainTable.ColumnDefinitions.Count - 1);
         }
@@ -43,7 +43,7 @@ namespace myDBMS
         {
             TextBox textBox = new TextBox();
             textBox.Style = MainWindow.rowElementStyle;
-            textBox.Text = "Row " + (this.Children.Count - 1);
+            //textBox.Text = "Row " + (this.Children.Count - 1);
             textBox.PreviewMouseDown += MainWindow.MainTable.SetSelected;
             this.Children.Add(textBox);
         }
@@ -55,6 +55,40 @@ namespace myDBMS
         public void RemoveRow()
         {
             RemoveRow(this.Children.Count - 1);
+        }
+        public void SelectNextRow()
+        {
+            for (int n = 1; n < this.Children.Count; n++)
+            {
+                TextBox row = this.Children[n] as TextBox;
+                if (row == MainWindow.MainTable.SelectedRow)
+                {
+                    if (n + 1 < this.Children.Count)
+                    {
+                        TextBox _row = this.Children[n + 1] as TextBox;
+                        MainWindow.MainTable.SelectedRow = _row;
+                        _row.Focus();
+                        break;
+                    }
+                }
+            }
+        }
+        public void SelectPrewRow()
+        {
+            for (int n = 2; n < this.Children.Count; n++)
+            {
+                TextBox row = this.Children[n] as TextBox;
+                if (row == MainWindow.MainTable.SelectedRow)
+                {
+                    if (n - 1 > 0)
+                    {
+                        TextBox _row = this.Children[n - 1] as TextBox;
+                        MainWindow.MainTable.SelectedRow = _row;
+                        _row.Focus();
+                        break;
+                    }
+                }
+            }
         }
     }
 

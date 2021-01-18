@@ -18,7 +18,7 @@ namespace myDBMS
         public void AddColumn(int rowCount)
         {
             if (this.ColumnDefinitions.Count == 0) AddColumnDifinition();
-            Column column = new Column(rowCount);
+            Column column = new Column(rowCount, $"Column {this.ColCount}");
             column.Index = this.Children.Count;
             this.Children.Add(column);
             AddColumnDifinition();
@@ -50,6 +50,15 @@ namespace myDBMS
             for (int i = 0; i < count; i++)
             {
                 foreach (Object child in this.Children) if (child is Column) ((Column)child).AddRow();
+                RowCount++;
+            }
+        }
+
+        public void AddRow(int count, string name)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                foreach (Object child in this.Children) if (child is Column) ((Column)child).AddRow(name);
                 RowCount++;
             }
         }
@@ -101,6 +110,28 @@ namespace myDBMS
                 SelectedColumn = SelectedRow.Parent as Column;
             }
             Console.WriteLine($"selected row: {SelectedRow?.Text}, col: {SelectedColumn.ColumnName.Content}");
+        }
+        public void SetSelected(int col, int row)
+        {
+            SelectedColumn = this.Children[col * 2] as Column;
+            SelectedRow = SelectedColumn.Children[row] as TextBox;
+        }
+        public void SelectRightColumn()
+        {
+            for (int n = 0; n < this.Children.Count - 1; n+=2)
+            {
+                Column col = this.Children[n] as Column;
+                if (col == SelectedColumn)
+                {
+                    if (n + 2 < this.Children.Count - 1)
+                    {
+                        Column _col = this.Children[n + 2] as Column;
+                        SelectedColumn = _col;
+
+                        break;
+                    }
+                }
+            }
         }
     }
 }
