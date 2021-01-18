@@ -59,6 +59,7 @@
     <Compile Include="ColumnNameWindow.xaml.cs">
       <DependentUpon>ColumnNameWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Row.cs" />
     <Compile Include="Table.cs" />
     <Page Include="ColumnNameWindow.xaml">
       <SubType>Designer</SubType>

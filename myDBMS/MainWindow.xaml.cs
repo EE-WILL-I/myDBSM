@@ -65,6 +65,11 @@ public partial class MainWindow : Window
         {
             MainTable.AddRow(1);
         }
+
+        private void table_rmv_row(object sender, RoutedEventArgs e)
+        {
+            MainTable.RemoveRow(MainTable.RowCount);
+        }
         public static void ShowColNameWin(object sender, EventArgs e)
         {
             colNameWin = new ColumnNameWindow();
@@ -74,29 +79,49 @@ public partial class MainWindow : Window
         }
         private static void SetColName(object sender, EventArgs e)
         {
-            if(!colNameWin.Value.Equals("") && MainTable.SelectedColumn != null) 
+            if (!colNameWin.Value.Equals("") && MainTable.SelectedColumn != null)
                 MainTable.SelectedColumn.ColumnName.Content = colNameWin.Value;
             colNameWin.Closed -= SetColName;
         }
-
-        private void table_rmv_row(object sender, RoutedEventArgs e)
-        {
-            MainTable.RemoveRow(MainTable.RowCount);
-        }
-
         private void OnKeyPressedHandler(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            switch (e.Key)
             {
-                MainTable.SelectedColumn.SelectNextRow();
+                case Key.Enter:
+                case Key.Down:
+                    {
+                        MainTable.SelectedColumn?.SelectNextRow();
+                        break;
+                    }
+                case Key.Up:
+                    {
+                        MainTable.SelectedColumn?.SelectPrewRow();
+                        break;
+                    }
             }
-            if (e.Key == Key.Up)
+            if (e.Key == Key.Enter && (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
             {
-                MainTable.SelectedColumn.SelectNextRow();
+                table_add_row(sender, e);
             }
-            if (e.Key == Key.Up)
+            else if (e.Key == Key.Right && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
             {
-                MainTable.SelectedColumn.SelectPrewRow();
+                MainTable.SelectRightColumn();
+            }
+            else if (e.Key == Key.Left && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+            {
+                MainTable.SelectLeftColumn();
+            }
+            else if (e.Key == Key.Back && (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+            {
+                table_rmv_row(sender, e);
+            }
+            else if (e.Key == Key.Enter && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                table_add_col(sender, e);
+            }
+            else if (e.Key == Key.Back && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                table_rmv_col(sender, e);
             }
         }
     }

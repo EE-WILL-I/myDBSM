@@ -12,7 +12,7 @@ namespace myDBMS
     {
         public int Index;
         public Label ColumnName = new Label();
-        public Column(int rowCount, String name)
+        public Column(int index, int rowCount, String name)
         {
             ColumnName.Content = name;
             ColumnName.Style = MainWindow.labelStyle;
@@ -26,26 +26,17 @@ namespace myDBMS
             }
             this.SetValue(Grid.ColumnProperty, MainWindow.MainTable.ColumnDefinitions.Count - 1);
         }
-        public Column(int rowCount) : this(rowCount, "Column") { }
-        public Column(String name) : this(1, name) { }
-        public Column() : this(0, "Column") { }
+        public Column(int rowCount) : this(0, rowCount, "Column") { }
+        public Column(String name) : this(0, 1, name) { }
+        public Column() : this(0, 0, "Column") { }
         ~Column() { ColumnName.MouseDoubleClick -= MainWindow.ShowColNameWin; }
         public void AddRow(String value)
         {
-            TextBox textBox = new TextBox();
-            textBox.Style = MainWindow.rowElementStyle;
-            textBox.Text = value;
-            textBox.PreviewMouseDown += MainWindow.MainTable.SetSelected;
-            textBox.TextChanged += MainWindow.MainTable.SetSelected;
-            this.Children.Add(textBox);
+            this.Children.Add(new Row(this.Children.Count, value));
         }
         public void AddRow()
         {
-            TextBox textBox = new TextBox();
-            textBox.Style = MainWindow.rowElementStyle;
-            //textBox.Text = "Row " + (this.Children.Count - 1);
-            textBox.PreviewMouseDown += MainWindow.MainTable.SetSelected;
-            this.Children.Add(textBox);
+            this.Children.Add(new Row(this.Children.Count));
         }
         public void RemoveRow(int index)
         {
@@ -58,36 +49,18 @@ namespace myDBMS
         }
         public void SelectNextRow()
         {
-            for (int n = 1; n < this.Children.Count; n++)
+            if (MainWindow.MainTable.SelectedRow != null && MainWindow.MainTable.SelectedRow.Index + 1 < this.Children.Count)
             {
-                TextBox row = this.Children[n] as TextBox;
-                if (row == MainWindow.MainTable.SelectedRow)
-                {
-                    if (n + 1 < this.Children.Count)
-                    {
-                        TextBox _row = this.Children[n + 1] as TextBox;
-                        MainWindow.MainTable.SelectedRow = _row;
-                        _row.Focus();
-                        break;
-                    }
-                }
+                MainWindow.MainTable.SelectedRow = this.Children[MainWindow.MainTable.SelectedRow.Index + 1] as Row;
+                MainWindow.MainTable.SelectedRow.Focus();
             }
         }
         public void SelectPrewRow()
         {
-            for (int n = 2; n < this.Children.Count; n++)
+            if (MainWindow.MainTable.SelectedRow != null && MainWindow.MainTable.SelectedRow.Index - 1 > 0)
             {
-                TextBox row = this.Children[n] as TextBox;
-                if (row == MainWindow.MainTable.SelectedRow)
-                {
-                    if (n - 1 > 0)
-                    {
-                        TextBox _row = this.Children[n - 1] as TextBox;
-                        MainWindow.MainTable.SelectedRow = _row;
-                        _row.Focus();
-                        break;
-                    }
-                }
+                MainWindow.MainTable.SelectedRow = this.Children[MainWindow.MainTable.SelectedRow.Index - 1] as Row;
+                MainWindow.MainTable.SelectedRow.Focus();
             }
         }
     }

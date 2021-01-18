@@ -11,14 +11,14 @@ namespace myDBMS
     public class Table : Grid
     {
         public int ColCount = 0, RowCount = 0;
-        public TextBox SelectedRow;
+        public Row SelectedRow;
         public Column SelectedColumn;
 
         public Table() { }
         public void AddColumn(int rowCount)
         {
             if (this.ColumnDefinitions.Count == 0) AddColumnDifinition();
-            Column column = new Column(rowCount, $"Column {this.ColCount}");
+            Column column = new Column(rowCount, rowCount, $"Column {this.ColCount}");
             column.Index = this.Children.Count;
             this.Children.Add(column);
             AddColumnDifinition();
@@ -102,35 +102,37 @@ namespace myDBMS
             if (sender is Label)
             {
                 SelectedColumn = ((Label)sender).Parent as Column;
-                if(SelectedColumn.Children.Count > 1) SelectedRow = SelectedColumn.Children[1] as TextBox;
+                if(SelectedColumn.Children.Count > 1) SelectedRow = SelectedColumn.Children[1] as Row;
             }
             else
             {
-                SelectedRow = (TextBox)sender;
-                SelectedColumn = SelectedRow.Parent as Column;
+                SelectedRow = (Row)sender;
+                SelectedColumn = ((TextBox)SelectedRow).Parent as Column;
             }
-            Console.WriteLine($"selected row: {SelectedRow?.Text}, col: {SelectedColumn.ColumnName.Content}");
+            Console.WriteLine($"selected row: {SelectedRow?.Index}, col: {SelectedColumn?.Index / 2}");
         }
         public void SetSelected(int col, int row)
         {
-            SelectedColumn = this.Children[col * 2] as Column;
-            SelectedRow = SelectedColumn.Children[row] as TextBox;
+            if (col % 2 == 1) col--;
+            SelectedColumn = this.Children[col] as Column;
+            SelectedRow = SelectedColumn.Children[row] as Row;
         }
         public void SelectRightColumn()
         {
-            for (int n = 0; n < this.Children.Count - 1; n+=2)
+            if (SelectedColumn.Index + 2 < this.Children.Count)
             {
-                Column col = this.Children[n] as Column;
-                if (col == SelectedColumn)
-                {
-                    if (n + 2 < this.Children.Count - 1)
-                    {
-                        Column _col = this.Children[n + 2] as Column;
-                        SelectedColumn = _col;
-
-                        break;
-                    }
-                }
+                SelectedColumn = this.Children[SelectedColumn.Index + 2] as Column;
+                SelectedRow = SelectedColumn.Children[SelectedRow.Index] as Row;
+                SelectedRow.Focus();
+            }
+        }
+        public void SelectLeftColumn()
+        {
+            if (SelectedColumn.Index - 2 >= 0)
+            {
+                SelectedColumn = this.Children[SelectedColumn.Index - 2] as Column;
+                SelectedRow = SelectedColumn.Children[SelectedRow.Index] as Row;
+                SelectedRow.Focus();
             }
         }
     }
