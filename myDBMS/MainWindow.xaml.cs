@@ -51,6 +51,7 @@ public partial class MainWindow : Window
         private void table_add_col(object sender, RoutedEventArgs e)
         {
             MainTable.AddColumn(MainTable.RowCount);
+            ShowColNameWin((Column)MainTable.Children[MainTable.Children.Count - 2], new EventArgs());
         }
 
         private void table_rmv_col(object sender, RoutedEventArgs e)
@@ -115,10 +116,19 @@ public partial class MainWindow : Window
         }
         public static void ShowColNameWin(object sender, EventArgs e)
         {
-            colNameWin = new ColumnNameWindow();
-            colNameWin.ColName = (string)MainTable.SelectedColumn.ColumnName.Content;
-            colNameWin.Closed += SetColName;
-            colNameWin.ShowDialog();
+            if (sender is Column)
+            {
+                colNameWin = new ColumnNameWindow((string)((Column)sender).ColumnName.Content);
+                MainTable.SelectedColumn = (Column)sender;
+                colNameWin.Closed += SetColName;
+                colNameWin.ShowDialog();
+            }
+            else
+            {
+                colNameWin = new ColumnNameWindow((string)MainTable.SelectedColumn.ColumnName.Content);
+                colNameWin.Closed += SetColName;
+                colNameWin.ShowDialog();
+            }
         }
         private static void SetColName(object sender, EventArgs e)
         {

@@ -20,18 +20,19 @@ namespace myDBMS
     public partial class ColumnNameWindow : Window
     {
         
-        public String Value = "", ColName = "Column";
-        public ColumnNameWindow()
+        public string Value = "";
+        public ColumnNameWindow(string oldName)
         {
             InitializeComponent();
             this.Owner = MainWindow.MW;
             MainWindow.MW.Closed += Exit;
             this.KeyDown += new KeyEventHandler(OnKeyPressedHandler);
 
-            tb_input.Text = ColName;
+            tb_input.Text = oldName;
             tb_input.Focus();
             tb_input.SelectAll();
         }
+        public ColumnNameWindow() : this("Column") { }
 
         void OnKeyPressedHandler(object sender, KeyEventArgs e)
         {
