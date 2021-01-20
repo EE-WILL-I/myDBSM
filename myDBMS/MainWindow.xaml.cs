@@ -77,6 +77,7 @@ public partial class MainWindow : Window
                     {
                         PathToSavedData = fileDialog.FileName;
                         TableSerializableData tsd = BinarySerializator.Read<TableSerializableData>(PathToSavedData);
+                        MainTable = null;
                         MainTable = tsd.Deserialize();
                         break;
                     }

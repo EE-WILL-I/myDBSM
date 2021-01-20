@@ -9,7 +9,6 @@ namespace myDBMS
     [Serializable]
     class TableSerializableData : List<string>
     {
-        //private List<string> data = new List<string>();
         public TableSerializableData(Table t)
         {
             this.Add(t.ColCount.ToString());

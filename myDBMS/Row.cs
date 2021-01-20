@@ -11,20 +11,26 @@ namespace myDBMS
     public class Row : TextBox
     {
         public int Index = 0;
-        public Row(int index, String value)
+        public Column Column;
+        public Row(Column column, int index, String value)
         {
+            Column = column;
             Index = index;
             this.Style = MainWindow.rowElementStyle;
-            this.PreviewMouseDown += MainWindow.MainTable.SetSelected;
-            this.TextChanged += MainWindow.MainTable.SetSelected;
+            if (Column != null)
+            {
+                this.TextChanged += Column.Table.SetSelected;
+                this.PreviewMouseDown += Column.Table.SetSelected;
+            }
             this.Text = value;
         }
-        public Row(int index) : this(index, "") { }
-        public Row() : this(0, "") { }
+        public Row(Column column, int index) : this(column, index, "") { }
+        public Row(int index) : this(null, index, "") { }
+        public Row() : this(null, 0, "") { }
         ~Row()
         {
-            this.PreviewMouseDown -= MainWindow.MainTable.SetSelected;
-            this.TextChanged -= MainWindow.MainTable.SetSelected;
+            this.PreviewMouseDown -= Column.Table.SetSelected;
+            this.TextChanged -= Column.Table.SetSelected;
         }
     }
 }

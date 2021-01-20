@@ -21,7 +21,7 @@ namespace myDBMS
             for (int i = 0; i < count; i++)
             {
                 if (this.ColumnDefinitions.Count == 0) AddColumnDifinition();
-                Column column = new Column(rowCount, rowCount, $"Column {this.ColCount}");
+                Column column = new Column(this, rowCount, rowCount, $"Column {this.ColCount}");
                 column.Index = this.Children.Count;
                 this.Children.Add(column);
                 AddColumnDifinition();
@@ -40,6 +40,7 @@ namespace myDBMS
             int size = this.Children.Count;
             if (size >= 2 && index < size)
             {
+                if (this.Children[index] as Column == SelectedColumn) SelectLeftColumn();
                 this.Children.RemoveAt(index);
                 this.Children.RemoveAt(index - 1);
                 RemoveColumnDifinition();
@@ -73,7 +74,11 @@ namespace myDBMS
         {
             if (index >= 0)
             {
-                foreach (Object child in this.Children) if (child is Column) ((Column)child).RemoveRow(index);
+                foreach (Object child in this.Children) if (child is Column)
+                    {
+                        if (child == SelectedRow) ((Column)child).SelectPrewRow();
+                        ((Column)child).RemoveRow(index);
+                    }
                 if(index > 0) RowCount--;
             }
         }
@@ -125,7 +130,7 @@ namespace myDBMS
         }
         public void SelectRightColumn()
         {
-            if (SelectedColumn.Index + 2 < this.Children.Count)
+            if (SelectedColumn?.Index + 2 < this.Children.Count)
             {
                 SelectedColumn = this.Children[SelectedColumn.Index + 2] as Column;
                 SelectedRow = SelectedColumn.Children[SelectedRow.Index] as Row;
@@ -134,7 +139,7 @@ namespace myDBMS
         }
         public void SelectLeftColumn()
         {
-            if (SelectedColumn.Index - 2 >= 0)
+            if (SelectedColumn?.Index - 2 >= 0)
             {
                 SelectedColumn = this.Children[SelectedColumn.Index - 2] as Column;
                 SelectedRow = SelectedColumn.Children[SelectedRow.Index] as Row;
